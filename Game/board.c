@@ -26,7 +26,8 @@ void putNewValue(struct gameBoard arg)
 		x=rand() % n;
 		y=rand() % n; 
 	}
-	board[y*n+x]=(rand()%2+1)*2;
+	int new = rand()%8;
+	board[y*n+x]=(new >= 3 ? 1 : 2)*2;
 }
 
 struct gameBoard initBoard(int n)
@@ -57,7 +58,7 @@ void printBoard(struct gameBoard arg)
 }
 
 
-int main(int argc, char** argv)
+/*int main(int argc, char** argv)
 {
 	if(argc != 2)
 	{
@@ -74,4 +75,4 @@ int main(int argc, char** argv)
 	struct gameBoard newBoard = initBoard(size);
 	printBoard(newBoard);
 	free(newBoard.board);
-}
+}*/
