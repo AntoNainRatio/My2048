@@ -26,7 +26,7 @@ int main()
 		.status = playing,
 	};
 	printBoard(partie.board);
-	moveUp(partie.board);
+	moveDown(partie.board);
 	printf("\n");
 	printBoard(partie.board);
 	return 1;
