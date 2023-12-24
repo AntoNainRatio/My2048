@@ -6,6 +6,7 @@ struct gameBoard
 {
 	int size;
 	int *board;
+	int maxValue;
 };
 
 
@@ -37,11 +38,30 @@ struct gameBoard initBoard(int n)
 	{
 		.size = n,
 		.board = board,
+		.maxValue = 4,
 	};
 	putNewValue(game);
 	putNewValue(game);
 	return game;
 }
+
+/*int* strToBoard(char* s, int size)
+{
+	int* res = malloc(size*size*sizeof(int));
+	int i = 0;
+	int y = 0;
+	int x = 0;
+	while(s[i] != 0)
+	{
+		if(s[i] == '\')
+		{
+			y++;
+			x = 0;
+		}
+		i++;
+	}
+	return res;
+}*/
 
 void printBoard(struct gameBoard arg)
 {
@@ -51,7 +71,7 @@ void printBoard(struct gameBoard arg)
 	{
 		for(int j = 0; j < n; j++)
 		{
-			printf("%d ",board[i * n + j]);
+			printf("%02d ",board[i * n + j]);
 		}
 		printf("\n");
 	}

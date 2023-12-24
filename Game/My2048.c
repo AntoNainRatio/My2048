@@ -25,9 +25,17 @@ int main()
 		.board = initBoard(4),
 		.status = playing,
 	};
-	printBoard(partie.board);
-	moveDown(partie.board);
-	printf("\n");
-	printBoard(partie.board);
+	while(partie.status != lost)
+	{
+		printBoard(partie.board);
+		printf("\n");
+		int input = -1;
+		while(input == -1)
+		{
+			input = DoMove(partie.board);
+		}
+		printf("\n");
+		putNewValue(partie.board);
+	}
 	return 1;
 }
