@@ -6,7 +6,7 @@ struct gameBoard
 {
 	int size;
 	int *board;
-	int maxValue;
+	int* maxValue;
 };
 
 
@@ -34,11 +34,12 @@ void putNewValue(struct gameBoard arg)
 struct gameBoard initBoard(int n)
 {
 	int *board = getBoard(n);
+	int mx = 4;
 	struct gameBoard game =
 	{
 		.size = n,
 		.board = board,
-		.maxValue = 4,
+		.maxValue = &mx,
 	};
 	putNewValue(game);
 	putNewValue(game);
@@ -67,11 +68,24 @@ void printBoard(struct gameBoard arg)
 {
 	int n = arg.size;
 	int *board = arg.board;
+	int d;
+	if(*(arg.maxValue) > 1000)
+	{
+		d = 4;
+	}
+	else if(*(arg.maxValue) > 100)
+	{
+		d = 3;
+	}
+	else
+	{
+		d = 2;
+	}
 	for(int i = 0; i < n; i++)
 	{
 		for(int j = 0; j < n; j++)
 		{
-			printf("%02d ",board[i * n + j]);
+			printf("%0*d ", d, board[i * n + j]);
 		}
 		printf("\n");
 	}

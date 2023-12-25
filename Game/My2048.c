@@ -28,6 +28,7 @@ int main()
 	while(partie.status != lost)
 	{
 		printBoard(partie.board);
+		printf("maxValue actual is %d\n",*partie.board.maxValue);
 		printf("\n");
 		int input = -1;
 		while(input == -1)

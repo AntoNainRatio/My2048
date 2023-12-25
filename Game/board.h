@@ -5,7 +5,7 @@ struct gameBoard
 {
 	int size;
 	int* board;
-	int maxValue;
+	int* maxValue;
 };
 
 int* getBoard(int n);

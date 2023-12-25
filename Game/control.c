@@ -28,9 +28,10 @@ int moveUp(struct gameBoard arg)
 					{
 						tab[(y-minus)*l+x] *=2;
 						tab[y*l+x] = 0;
-						if(arg.maxValue < tab[(y-minus)*l+x])
+						if(*arg.maxValue < tab[(y-minus)*l+x])
 						{
-							arg.maxValue = tab[(y-minus)*l+x];
+							arg.maxValue = &(tab[(y-minus)*l+x]);
+							printf("Max Value = %d\n",*arg.maxValue);
 						}
 					}
 					else
@@ -74,9 +75,10 @@ int moveDown(struct gameBoard arg)
 					{
 						tab[(y+plus)*l+x]*=2;
 						tab[y*l+x] = 0;
-						if(arg.maxValue < tab[(y+plus)*l+x])
+						if(*arg.maxValue < tab[(y+plus)*l+x])
 						{
-							arg.maxValue = tab[(y+plus)*l+x];
+							arg.maxValue = &(tab[(y+plus)*l+x]);
+							printf("Max Value = %d\n",*arg.maxValue);
 						}
 
 					}
@@ -121,9 +123,11 @@ int moveLeft(struct gameBoard arg)
 					{
 						tab[y*l+x-minus] *= 2;
 						tab[y*l+x] = 0;
-						if(arg.maxValue < tab[y*l+x-minus])
+						if(*arg.maxValue < tab[y*l+x-minus])
 						{
-							arg.maxValue = tab[y*l+x-minus];
+						
+							arg.maxValue = &(tab[y*l+x-minus]);
+							printf("Max Value = %d\n",*arg.maxValue);
 						}
 					}
 					else
@@ -167,9 +171,10 @@ int moveRight(struct gameBoard arg)
 					{
 						tab[y*l+x+plus] *= 2;
 						tab[y*l+x] = 0;
-						if(arg.maxValue < tab[y*l+x+plus])
+						if(*arg.maxValue < tab[y*l+x+plus])
 						{
-							arg.maxValue = tab[y*l+x+plus];
+							arg.maxValue = &(tab[y*l+x+plus]);
+							printf("Max Value = %d\n",*arg.maxValue);
 						}
 
 					}
