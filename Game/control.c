@@ -1,10 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "board.h"
+
 
 int moveUp(struct gameBoard arg)
 {
+	int valid = -1;
 	int l = arg.size;
+	int* m = calloc(l*l,sizeof(int));
 	int* tab = arg.board;
 	for(int x = 0; x < l; x++)
 	{
@@ -21,18 +25,16 @@ int moveUp(struct gameBoard arg)
 				{
 					tab[(y-minus)*l+x] = tab[y*l+x];
 					tab[y*l+x] = 0;
+					valid = 0;
 				}
 				else
 				{
-					if(tab[(y-minus)*l+x] == tab[y*l+x])
+					if(tab[(y-minus)*l+x] == tab[y*l+x] && m[(y-minus)*l+x]==0)
 					{
 						tab[(y-minus)*l+x] *=2;
 						tab[y*l+x] = 0;
-						if(*arg.maxValue < tab[(y-minus)*l+x])
-						{
-							arg.maxValue = &(tab[(y-minus)*l+x]);
-							printf("Max Value = %d\n",*arg.maxValue);
-						}
+						valid = 0;
+						m[(y-minus)*l+x] = 1;
 					}
 					else
 					{
@@ -40,18 +42,22 @@ int moveUp(struct gameBoard arg)
 						if(minus>1)
 						{
 							tab[y*l+x] = 0;
+							valid = 0;
 						}
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	free(m);
+	return valid;
 }
 
 int moveDown(struct gameBoard arg)
 {
+	int valid = -1;
 	int l = arg.size;
+	int* m = calloc(l*l, sizeof(int));
 	int* tab = arg.board;
 	for(int x = 0; x < l; x++)
 	{
@@ -68,19 +74,16 @@ int moveDown(struct gameBoard arg)
 				{
 					tab[(y+plus) * l + x] = tab[y*l+x];
 					tab[y*l+x] = 0;
+					valid = 0;
 				}
 				else
 				{
-					if(tab[y*l+x] == tab[(y+plus)*l+x])
+					if(tab[y*l+x] == tab[(y+plus)*l+x] && m[(y+plus)*l+x] == 0)
 					{
 						tab[(y+plus)*l+x]*=2;
 						tab[y*l+x] = 0;
-						if(*arg.maxValue < tab[(y+plus)*l+x])
-						{
-							arg.maxValue = &(tab[(y+plus)*l+x]);
-							printf("Max Value = %d\n",*arg.maxValue);
-						}
-
+						m[(y+plus)*l+x] = 1;
+						valid = 0;
 					}
 					else
 					{
@@ -88,18 +91,22 @@ int moveDown(struct gameBoard arg)
 						if(plus>1)
 						{
 							tab[y*l+x] = 0;
+							valid = 0;
 						}
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	free(m);
+	return valid;
 }
 
 int moveLeft(struct gameBoard arg)
 {
+	int valid = -1;
 	int l = arg.size;
+	int* m = calloc(l*l, sizeof(int));
 	int* tab = arg.board;
 	for(int y = 0; y < l; y++)
 	{
@@ -116,19 +123,15 @@ int moveLeft(struct gameBoard arg)
 				{
 					tab[y*l+x-minus] = tab[l*y+x];
 					tab[y*l+x] = 0;
+					valid = 0;
 				}
 				else
 				{
-					if(tab[y*l+x-minus] == tab[y*l+x])
+					if(tab[y*l+x-minus] == tab[y*l+x] && m[y*l+x-minus] == 0)
 					{
 						tab[y*l+x-minus] *= 2;
 						tab[y*l+x] = 0;
-						if(*arg.maxValue < tab[y*l+x-minus])
-						{
-						
-							arg.maxValue = &(tab[y*l+x-minus]);
-							printf("Max Value = %d\n",*arg.maxValue);
-						}
+						valid = 0;
 					}
 					else
 					{
@@ -136,18 +139,22 @@ int moveLeft(struct gameBoard arg)
 						if(minus>1)
 						{
 							tab[y*l+x] = 0;
+							valid = 0;
 						}
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	free(m);
+	return valid;
 }
 
 int moveRight(struct gameBoard arg)
 {
+	int valid = -1;
 	int l = arg.size;
+	int* m = calloc(l*l, sizeof(int));
 	int* tab = arg.board;
 	for(int y = 0; y < l; y++)
 	{
@@ -164,19 +171,16 @@ int moveRight(struct gameBoard arg)
 				{
 					tab[y*l +x+plus] = tab[y*l+x];
 					tab[y*l+x] = 0;
+					valid = 0;
 				}
 				else
 				{
-					if(tab[y*l+x+plus] == tab[y*l+x])
+					if(tab[y*l+x+plus] == tab[y*l+x] && m[y*l+x+plus] == 0)
 					{
 						tab[y*l+x+plus] *= 2;
 						tab[y*l+x] = 0;
-						if(*arg.maxValue < tab[y*l+x+plus])
-						{
-							arg.maxValue = &(tab[y*l+x+plus]);
-							printf("Max Value = %d\n",*arg.maxValue);
-						}
-
+						m[y*l+x+plus] = 1;
+						valid = 0;
 					}
 					else
 					{
@@ -184,43 +188,44 @@ int moveRight(struct gameBoard arg)
 						if(plus>1)
 						{
 							tab[y*l+x] = 0;
+							valid =0;
 						}
 					}
 				}
 			}
 		}
 	}
-	return 0;
+	free(m);
+	return valid;
 }
 
 int DoMove(struct gameBoard arg)
 {
 	char res;
-	scanf("%c",&res);
+	scanf("%c", &res);
 	if(res == 'a')
 	{
-		moveLeft(arg);
-		return 0;
+		return moveLeft(arg);
 	}
 	else if(res == 'w')
 	{
-		moveUp(arg);
-		return 0;
+		return moveUp(arg);
 	}
 	else if(res == 's')
 	{
-		moveDown(arg);
-		return 0;
+		return moveDown(arg);
 	}
 	else if(res == 'd')
 	{
-		moveRight(arg);
-		return 0;
+		return moveRight(arg);
 	}
 	else if(res == 'h')
 	{
 		printf("%s\n%s\n%s\n%s\n%s\n%s\n","Help for controls: ","w for up","s for down","a for left","d for right","Hope it helped you :)");
 		return -1;
 	}
-	return 0;;
+	else
+	{
+		return -1;
+	}
 }

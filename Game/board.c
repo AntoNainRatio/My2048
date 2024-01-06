@@ -1,14 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-
-struct gameBoard
-{
-	int size;
-	int *board;
-	int* maxValue;
-};
-
+#include "board.h"
 
 int* getBoard(int n)
 {
@@ -28,18 +21,18 @@ void putNewValue(struct gameBoard arg)
 		y=rand() % n; 
 	}
 	int new = rand()%8;
-	board[y*n+x]=(new >= 3 ? 1 : 2)*2;
+	board[y*n+x]=(new >= 2 ? 1 : 2)*2;
 }
 
 struct gameBoard initBoard(int n)
 {
 	int *board = getBoard(n);
-	int mx = 4;
+	int startScore = 0;
 	struct gameBoard game =
 	{
 		.size = n,
 		.board = board,
-		.maxValue = &mx,
+		.score = &startScore,
 	};
 	putNewValue(game);
 	putNewValue(game);
@@ -64,31 +57,98 @@ struct gameBoard initBoard(int n)
 	return res;
 }*/
 
+void printScore(struct gameBoard arg)
+{
+	printf("Score : %d\n",*arg.score);
+}
+
+void printSep(int n)
+{
+	for(int i = 0; i < n; i++)
+	{
+		printf("=====");
+	}
+	printf("\n");
+	}
+
 void printBoard(struct gameBoard arg)
 {
 	int n = arg.size;
 	int *board = arg.board;
-	int d;
-	if(*(arg.maxValue) > 1000)
-	{
-		d = 4;
-	}
-	else if(*(arg.maxValue) > 100)
-	{
-		d = 3;
-	}
-	else
-	{
-		d = 2;
-	}
 	for(int i = 0; i < n; i++)
 	{
 		for(int j = 0; j < n; j++)
 		{
-			printf("%0*d ", d, board[i * n + j]);
+			printf("%04d ", board[i * n + j]);
 		}
 		printf("\n");
 	}
+}
+
+void printAll(struct gameBoard arg)
+{
+	int n = arg.size;
+	printSep(n);
+	printf("- My 2048 Game -\n");
+	printScore(arg);
+	printSep(n);
+	printBoard(arg);
+	printSep(n);
+}
+
+int isFull(struct gameBoard arg)
+{
+	int* board = arg.board;
+	int n = arg.size;
+	for(int i = 0; i < n; i++)
+	{
+		for(int j = 0; j < n; j++)
+		{
+			if(board[i*n + j] == 0)
+			{
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
+void freeBoard(struct gameBoard arg)
+{
+	free(arg.board);
+}
+
+int possibleMove(struct gameBoard arg)
+{
+	int n = arg.size;
+	int *board = arg.board;
+	for(int i = 0; i < n; i++)
+	{
+		for(int j = 0; j < n; j++)
+		{
+			if(board[i*n+j] == 0)
+			{
+				return 1;
+			}
+			if(i+1 < n && board[(i+1)*n+j] == board[i*n+j])
+			{
+				return 1;
+			}
+			if(i-1 >= 0 && board[(i-1)*n+j] == board[i*n+j])
+			{
+				return 1;
+			}
+			if(j+1 < n && board[i*n + j+1] == board[i*n+j])
+			{
+				return 1;
+			}
+			if(j-1 >= 0 && board[i*n+j-1] == board[i*n+j])
+			{
+				return 1;
+			}
+		}
+	}
+	return 0;
 }
 
 

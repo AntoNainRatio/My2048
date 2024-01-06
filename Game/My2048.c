@@ -27,16 +27,24 @@ int main()
 	};
 	while(partie.status != lost)
 	{
-		printBoard(partie.board);
-		printf("maxValue actual is %d\n",*partie.board.maxValue);
-		printf("\n");
+		printAll(partie.board);
+		if(possibleMove(partie.board) == 0)
+		{
+			partie.status = 1;
+			continue;
+		}
 		int input = -1;
 		while(input == -1)
 		{
 			input = DoMove(partie.board);
 		}
+		if(isFull(partie.board) == 1)
+		{
+			putNewValue(partie.board);
+		}
 		printf("\n");
-		putNewValue(partie.board);
 	}
+	printf("Lost :(\n");
+	freeBoard(partie.board);
 	return 1;
 }
