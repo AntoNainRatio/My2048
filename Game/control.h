@@ -6,5 +6,6 @@ int moveDown(struct gameBoard arg);
 int moveLeft(struct gameBoard arg);
 int moveRight(struct gameBoard arg);
 int DoMove(struct gameBoard arg);
+int DoRandomMove(struct gameBoard arg);
 
 #endif

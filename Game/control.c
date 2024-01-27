@@ -229,3 +229,24 @@ int DoMove(struct gameBoard arg)
 		return -1;
 	}
 }
+
+int DoRandomMove(struct gameBoard arg)
+{
+	int m = rand() % 4;
+	if(m == 0)
+	{
+		return moveLeft(arg);
+	}
+	else if(m == 1)
+	{
+		return moveRight(arg);
+	}
+	else if(m == 2)
+	{
+		return moveUp(arg);
+	}
+	else
+	{
+		return moveDown(arg);
+	}
+}
