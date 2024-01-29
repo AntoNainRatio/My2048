@@ -9,7 +9,7 @@ int* getBoard(int n)
 	return res;
 }
 
-void putNewValue(struct gameBoard arg)
+void putNewValue(struct game arg)
 {
 	int n = arg.size;
 	int *board = arg.board;
@@ -20,15 +20,15 @@ void putNewValue(struct gameBoard arg)
 		x=rand() % n;
 		y=rand() % n; 
 	}
-	int new = rand()%8;
-	board[y*n+x]=(new >= 2 ? 1 : 2)*2;
+	int new = rand()%10;
+	board[y*n+x]=(new == 1 ? 2 : 1)*2;
 }
 
-struct gameBoard initBoard(int n)
+struct game initGame(int n)
 {
 	int *board = getBoard(n);
 	int startScore = 0;
-	struct gameBoard game =
+	struct game game =
 	{
 		.size = n,
 		.board = board,
@@ -59,7 +59,7 @@ struct gameBoard initBoard(int n)
 
 void printScore(struct game arg)
 {
-	printf("Score : %d\n",arg.score);
+	printf("Score : %d\n",*arg.score);
 }
 
 void printSep(int n)
@@ -71,7 +71,7 @@ void printSep(int n)
 	printf("\n");
 	}
 
-void printBoard(struct gameBoard arg)
+void printBoard(struct game arg)
 {
 	int n = arg.size;
 	int *board = arg.board;
@@ -87,16 +87,19 @@ void printBoard(struct gameBoard arg)
 
 void printAll(struct game arg)
 {
+	printf("%d\n",*arg.score);
 	int n = arg.size;
+	printf("%d\n",*arg.score);
 	printSep(n);
 	printf("- My 2048 Game -\n");
+	printf("%d\n",*arg.score);
 	printScore(arg);
 	printSep(n);
-	printBoard(arg.board);
+	printBoard(arg);
 	printSep(n);
 }
 
-int isFull(struct gameBoard arg)
+int isFull(struct game arg)
 {
 	int* board = arg.board;
 	int n = arg.size;
@@ -113,12 +116,12 @@ int isFull(struct gameBoard arg)
 	return 0;
 }
 
-void freeBoard(struct gameBoard arg)
+void freeBoard(struct game arg)
 {
 	free(arg.board);
 }
 
-int possibleMove(struct gameBoard arg)
+int possibleMove(struct game arg)
 {
 	int n = arg.size;
 	int *board = arg.board;

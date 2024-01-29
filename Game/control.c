@@ -16,9 +16,9 @@
 int moveUp(struct game arg)
 {
 	int valid = -1;
-	int l = arg.board.size;
+	int l = arg.size;
 	int* m = calloc(l*l,sizeof(int));
-	int* tab = arg.board.board;
+	int* tab = arg.board;
 	for(int x = 0; x < l; x++)
 	{
 		for(int y = 1; y < l; y++)
@@ -40,8 +40,9 @@ int moveUp(struct game arg)
 				{
 					if(tab[(y-minus)*l+x] == tab[y*l+x] && m[(y-minus)*l+x]==0)
 					{
-						tab[(y-minus)*l+x] *=2;
-						arg.score = arg.score + tab[(y-minus)*l+x];
+						tab[(y-minus)*l+x] *= 2;
+						int newscore = *arg.score + tab[(y-minus)*l+x];
+						arg.score = &newscore;
 						tab[y*l+x] = 0;
 						valid = 0;
 						m[(y-minus)*l+x] = 1;
@@ -68,7 +69,7 @@ int moveDown(struct game arg)
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board.board;
+	int* tab = arg.board;
 	for(int x = 0; x < l; x++)
 	{
 		for(int y = l-2; y >= 0; y--)
@@ -91,7 +92,8 @@ int moveDown(struct game arg)
 					if(tab[y*l+x] == tab[(y+plus)*l+x] && m[(y+plus)*l+x] == 0)
 					{
 						tab[(y+plus)*l+x]*=2;
-						arg.score = arg.score + tab[(y+plus)*l+x];
+						int newscore = *arg.score + tab[(y+plus)*l+x];
+						arg.score = &newscore;
 						tab[y*l+x] = 0;
 						m[(y+plus)*l+x] = 1;
 						valid = 0;
@@ -118,7 +120,7 @@ int moveLeft(struct game arg)
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board.board;
+	int* tab = arg.board;
 	for(int y = 0; y < l; y++)
 	{
 		for(int x = 1; x < l; x++)
@@ -141,7 +143,8 @@ int moveLeft(struct game arg)
 					if(tab[y*l+x-minus] == tab[y*l+x] && m[y*l+x-minus] == 0)
 					{
 						tab[y*l+x-minus] *= 2;
-						arg.score = arg.score + tab[y*l+x-minus];
+						int newscore = (*arg.score + tab[y*l+x-minus]);
+						arg.score = &newscore;
 						tab[y*l+x] = 0;
 						valid = 0;
 					}
@@ -167,7 +170,7 @@ int moveRight(struct game arg)
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board.board;
+	int* tab = arg.board;
 	for(int y = 0; y < l; y++)
 	{
 		for(int x = l-2; x >= 0; x--)
@@ -190,7 +193,8 @@ int moveRight(struct game arg)
 					if(tab[y*l+x+plus] == tab[y*l+x] && m[y*l+x+plus] == 0)
 					{
 						tab[y*l+x+plus] *= 2;
-						arg.score = arg.score + tab[y*l+x+plus];
+						int newscore = (*arg.score + tab[y*l+x+plus]);
+						arg.score = &newscore;
 						tab[y*l+x] = 0;
 						m[y*l+x+plus] = 1;
 						valid = 0;
