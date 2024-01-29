@@ -8,13 +8,22 @@ struct gameBoard
 	int* score;
 };
 
+struct game
+{
+	int score;
+	int size;
+	struct gameBoard board;
+	int status;
+};
+
+
 int* getBoard(int n);
 void putNewValue(struct gameBoard arg);
 struct gameBoard initBoard(int n);
 void printSep(int n);
-void printScore(struct gameBoard arg);
+void printScore(struct game arg);
 void printBoard(struct gameBoard arg);
-void printAll(struct gameBoard arg);
+void printAll(struct game arg);
 int isFull(struct gameBoard arg);
 void freeBoard(struct gameBoard arg);
 int possibleMove(struct gameBoard arg);

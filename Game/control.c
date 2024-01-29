@@ -2,14 +2,23 @@
 #include <stdio.h>
 #include <string.h>
 #include "board.h"
+#include "control.h"
+
+/*struct game
+{
+	int score;
+	int size;
+	struct gameBoard board;
+	int status;
+};*/
 
 
-int moveUp(struct gameBoard arg)
+int moveUp(struct game arg)
 {
 	int valid = -1;
-	int l = arg.size;
+	int l = arg.board.size;
 	int* m = calloc(l*l,sizeof(int));
-	int* tab = arg.board;
+	int* tab = arg.board.board;
 	for(int x = 0; x < l; x++)
 	{
 		for(int y = 1; y < l; y++)
@@ -32,6 +41,7 @@ int moveUp(struct gameBoard arg)
 					if(tab[(y-minus)*l+x] == tab[y*l+x] && m[(y-minus)*l+x]==0)
 					{
 						tab[(y-minus)*l+x] *=2;
+						arg.score = arg.score + tab[(y-minus)*l+x];
 						tab[y*l+x] = 0;
 						valid = 0;
 						m[(y-minus)*l+x] = 1;
@@ -53,12 +63,12 @@ int moveUp(struct gameBoard arg)
 	return valid;
 }
 
-int moveDown(struct gameBoard arg)
+int moveDown(struct game arg)
 {
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board;
+	int* tab = arg.board.board;
 	for(int x = 0; x < l; x++)
 	{
 		for(int y = l-2; y >= 0; y--)
@@ -81,6 +91,7 @@ int moveDown(struct gameBoard arg)
 					if(tab[y*l+x] == tab[(y+plus)*l+x] && m[(y+plus)*l+x] == 0)
 					{
 						tab[(y+plus)*l+x]*=2;
+						arg.score = arg.score + tab[(y+plus)*l+x];
 						tab[y*l+x] = 0;
 						m[(y+plus)*l+x] = 1;
 						valid = 0;
@@ -102,12 +113,12 @@ int moveDown(struct gameBoard arg)
 	return valid;
 }
 
-int moveLeft(struct gameBoard arg)
+int moveLeft(struct game arg)
 {
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board;
+	int* tab = arg.board.board;
 	for(int y = 0; y < l; y++)
 	{
 		for(int x = 1; x < l; x++)
@@ -130,6 +141,7 @@ int moveLeft(struct gameBoard arg)
 					if(tab[y*l+x-minus] == tab[y*l+x] && m[y*l+x-minus] == 0)
 					{
 						tab[y*l+x-minus] *= 2;
+						arg.score = arg.score + tab[y*l+x-minus];
 						tab[y*l+x] = 0;
 						valid = 0;
 					}
@@ -150,12 +162,12 @@ int moveLeft(struct gameBoard arg)
 	return valid;
 }
 
-int moveRight(struct gameBoard arg)
+int moveRight(struct game arg)
 {
 	int valid = -1;
 	int l = arg.size;
 	int* m = calloc(l*l, sizeof(int));
-	int* tab = arg.board;
+	int* tab = arg.board.board;
 	for(int y = 0; y < l; y++)
 	{
 		for(int x = l-2; x >= 0; x--)
@@ -178,6 +190,7 @@ int moveRight(struct gameBoard arg)
 					if(tab[y*l+x+plus] == tab[y*l+x] && m[y*l+x+plus] == 0)
 					{
 						tab[y*l+x+plus] *= 2;
+						arg.score = arg.score + tab[y*l+x+plus];
 						tab[y*l+x] = 0;
 						m[y*l+x+plus] = 1;
 						valid = 0;
@@ -199,7 +212,7 @@ int moveRight(struct gameBoard arg)
 	return valid;
 }
 
-int DoMove(struct gameBoard arg)
+int DoMove(struct game arg)
 {
 	char res;
 	scanf("%c", &res);
@@ -230,7 +243,7 @@ int DoMove(struct gameBoard arg)
 	}
 }
 
-int DoRandomMove(struct gameBoard arg)
+int DoRandomMove(struct game arg)
 {
 	int m = rand() % 4;
 	if(m == 0)

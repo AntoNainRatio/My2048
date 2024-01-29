@@ -8,13 +8,13 @@
 #define playing 0
 #define lost 1
 
-struct game
+/*struct game
 {
 	int score;
 	int size;
 	struct gameBoard board;
 	int status;
-};
+};*/
 
 
 int play()
@@ -28,7 +28,7 @@ int play()
 	};
 	while(partie.status != lost)
 	{
-		printAll(partie.board);
+		printAll(partie);
 		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
@@ -37,7 +37,7 @@ int play()
 		int input = -1;
 		while(input == -1)
 		{
-			input = DoMove(partie.board);
+			input = DoMove(partie);
 		}
 		if(isFull(partie.board) == 1)
 		{
@@ -50,7 +50,7 @@ int play()
 	return 1;
 }
 
-int randomBot()
+int randomBot(int n)
 {
 	struct game partie =
 	{
@@ -59,9 +59,14 @@ int randomBot()
 		.board = initBoard(4),
 		.status = playing,
 	};
+	int nbMove = 0;
 	while(partie.status != lost)
 	{
-		printAll(partie.board);
+		if(nbMove % n ==0)
+		{
+			printAll(partie);
+			printf("\n");
+		}
 		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
@@ -70,12 +75,66 @@ int randomBot()
 		int input = -1;
 		while(input == -1)
 		{
-			input = DoRandomMove(partie.board);
+			input = DoRandomMove(partie);
 		}
 		if(isFull(partie.board) == 1)
 		{
 			putNewValue(partie.board);
 		}
+		nbMove += 1;
+	}
+	if(nbMove % n != 0)
+	{
+		printAll(partie);
+		printf("\n");
+	}
+	printf("Finished :)\n");
+	freeBoard(partie.board);
+	return 1;
+}
+
+
+int prioBot(int n)
+{
+	struct game partie =
+	{
+		.score = 0,
+		.size = 4,
+		.board = initBoard(4),
+		.status = playing,
+	};
+	int nbMove = 0;
+	while(partie.status != lost)
+	{
+		if(nbMove % n == 0)
+		{
+			printAll(partie);
+			printf("\n");
+		}
+		if(possibleMove(partie.board) == 0)
+		{
+			partie.status = 1;
+			continue;
+		}
+		if(moveUp(partie) == -1)
+		{
+			if(moveLeft(partie) == -1)
+			{
+				if(moveDown(partie) == -1)
+				{
+					moveRight(partie);
+				}
+			}
+		}
+		if(isFull(partie.board) == 1)
+		{
+			putNewValue(partie.board);
+		}
+		nbMove += 1;
+	}
+	if(nbMove % n != 0)
+	{
+		printAll(partie);
 		printf("\n");
 	}
 	printf("Finished :)\n");
@@ -92,9 +151,29 @@ int main(int argc, char**  argv)
 	}
 	else
 	{
-		if(strcmp(argv[1],"rdm")==0)
+		if(strcmp(argv[1],"--h")==0)
 		{
-			return randomBot();
+			printf("Help settings for My2048:\n");
+			printf("	\"./a.out\" --> Normal playing\n");
+			printf("	\"./a.out rdm\"  --> Random Bot Playing\n");
+			printf("That's it\n");
+			printf("Hope it helped you :)\n");
+		}
+		else if(strcmp(argv[1],"rdm")==0)
+		{
+			if(argc == 3)
+			{
+				return randomBot(atoi(argv[2]));
+			}
+			return randomBot(1);
+		}
+		else if(strcmp(argv[1],"prio")==0)
+		{
+			if(argc == 3)
+			{
+				return prioBot(atoi(argv[2]));
+			}
+			return prioBot(1);
 		}
 		else
 		{

@@ -57,9 +57,9 @@ struct gameBoard initBoard(int n)
 	return res;
 }*/
 
-void printScore(struct gameBoard arg)
+void printScore(struct game arg)
 {
-	printf("Score : %d\n",*arg.score);
+	printf("Score : %d\n",arg.score);
 }
 
 void printSep(int n)
@@ -85,14 +85,14 @@ void printBoard(struct gameBoard arg)
 	}
 }
 
-void printAll(struct gameBoard arg)
+void printAll(struct game arg)
 {
 	int n = arg.size;
 	printSep(n);
 	printf("- My 2048 Game -\n");
 	printScore(arg);
 	printSep(n);
-	printBoard(arg);
+	printBoard(arg.board);
 	printSep(n);
 }
 
