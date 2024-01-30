@@ -4,6 +4,7 @@
 #include <string.h>
 #include "board.h"
 #include "control.h"
+#include "master.h"
 
 #define playing 0
 #define lost 1
@@ -30,6 +31,19 @@ int play()
 	while(partie.status != lost)
 	{
 		printAll(partie);
+		/*
+		 *		DEBUG 4 predictions
+		 *
+		 * printf("Test Move:\n");
+		printf("Up\n");
+		printBoard(boardUp(partie.board),partie.board.size);
+		printf("Down\n");
+		printBoard(boardDown(partie.board),partie.board.size);
+		printf("Left\n");
+		printBoard(boardLeft(partie.board),partie.board.size);
+		printf("Right\n");
+		printBoard(boardRight(partie.board),partie.board.size);
+		*/
 		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;

@@ -24,6 +24,15 @@ void putNewValue(struct gameBoard arg)
 	board[y*n+x]=(new >= 2 ? 1 : 2)*2;
 }
 
+int* persoBoard(int* tab, int size)
+{
+	tab[0*size+0]=64;
+	tab[1*size+0]=32;
+	tab[2*size+0]=32;
+	tab[3*size+0]=0;
+	return tab;
+}
+
 struct gameBoard initBoard(int n)
 {
 	int *board = getBoard(n);
@@ -32,6 +41,7 @@ struct gameBoard initBoard(int n)
 		.size = n,
 		.board = board,
 	};
+	game.board = persoBoard(game.board,game.size);
 	putNewValue(game);
 	putNewValue(game);
 	return game;
@@ -69,17 +79,23 @@ void printSep(int n)
 	printf("\n");
 	}
 
-void printBoard(struct gameBoard arg)
+void printBoard(int* tab,int n)
 {
-	int n = arg.size;
-	int *board = arg.board;
-	for(int i = 0; i < n; i++)
+	if(tab == NULL)
 	{
-		for(int j = 0; j < n; j++)
+		printf("Not valid move\n");
+	}
+	else
+	{
+		int *board = tab;
+		for(int i = 0; i < n; i++)
 		{
-			printf("%04d ", board[i * n + j]);
+			for(int j = 0; j < n; j++)
+			{
+				printf("%04d ", board[i * n + j]);
+			}
+			printf("\n");
 		}
-		printf("\n");
 	}
 }
 
@@ -90,7 +106,7 @@ void printAll(struct game arg)
 	printf("- My 2048 Game -\n");
 	printScore(arg);
 	printSep(n);
-	printBoard(arg.board);
+	printBoard(arg.board.board,arg.board.size);
 	printSep(n);
 }
 
