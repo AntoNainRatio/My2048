@@ -19,14 +19,18 @@
 
 int play()
 {
-	struct game partie = initGame(4);
-	printf("%d\n",*partie.score);
+	int startScore = 0;
+	struct game partie =
+	{
+		.score = &startScore,
+		.size = 4,
+		.board = initBoard(4),
+		.status = playing,
+	};
 	while(partie.status != lost)
 	{
-			printf("%d\n",*partie.score);
 		printAll(partie);
-		printf("%d\n",*partie.score);
-		if(possibleMove(partie) == 0)
+		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
 			continue;
@@ -36,20 +40,27 @@ int play()
 		{
 			input = DoMove(partie);
 		}
-		if(isFull(partie) == 1)
+		if(isFull(partie.board) == 1)
 		{
-			putNewValue(partie);
+			putNewValue(partie.board);
 		}
 		printf("\n");
 	}
 	printf("Finished :)\n");
-	freeBoard(partie);
+	freeBoard(partie.board);
 	return 1;
 }
 
 int randomBot(int n)
 {
-	struct game partie = initGame(4);
+	int startScore = 0;
+	struct game partie =
+	{
+		.score = &startScore,
+		.size = 4,
+		.board = initBoard(4),
+		.status = playing,
+	};
 	int nbMove = 0;
 	while(partie.status != lost)
 	{
@@ -58,7 +69,7 @@ int randomBot(int n)
 			printAll(partie);
 			printf("\n");
 		}
-		if(possibleMove(partie) == 0)
+		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
 			continue;
@@ -68,9 +79,9 @@ int randomBot(int n)
 		{
 			input = DoRandomMove(partie);
 		}
-		if(isFull(partie) == 1)
+		if(isFull(partie.board) == 1)
 		{
-			putNewValue(partie);
+			putNewValue(partie.board);
 		}
 		nbMove += 1;
 	}
@@ -80,14 +91,21 @@ int randomBot(int n)
 		printf("\n");
 	}
 	printf("Finished :)\n");
-	freeBoard(partie);
+	freeBoard(partie.board);
 	return 1;
 }
 
 
 int prioBot(int n)
 {
-	struct game partie = initGame(4);
+	int startScore = 0;
+	struct game partie =
+	{
+		.score = &startScore,
+		.size = 4,
+		.board = initBoard(4),
+		.status = playing,
+	};
 	int nbMove = 0;
 	while(partie.status != lost)
 	{
@@ -96,7 +114,7 @@ int prioBot(int n)
 			printAll(partie);
 			printf("\n");
 		}
-		if(possibleMove(partie) == 0)
+		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
 			continue;
@@ -111,9 +129,9 @@ int prioBot(int n)
 				}
 			}
 		}
-		if(isFull(partie) == 1)
+		if(isFull(partie.board) == 1)
 		{
-			putNewValue(partie);
+			putNewValue(partie.board);
 		}
 		nbMove += 1;
 	}
@@ -123,7 +141,7 @@ int prioBot(int n)
 		printf("\n");
 	}
 	printf("Finished :)\n");
-	freeBoard(partie);
+	freeBoard(partie.board);
 	return 1;
 }
 
