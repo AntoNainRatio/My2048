@@ -1,9 +1,9 @@
 #ifndef MASTER_H
 #define MASTER_H
 
-int* boardUp(struct gameBoard arg);
-int* boardDown(struct gameBoard arg);
-int* boardLeft(struct gameBoard arg);
-int* boardRight(struct gameBoard arg);
+struct game* boardUp(struct game arg);
+struct game* boardDown(struct game arg);
+struct game* boardLeft(struct game arg);
+struct game* boardRight(struct game arg);
 
 #endif

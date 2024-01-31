@@ -1,6 +1,9 @@
 #ifndef BOARD_H
 #define BOARD_H
 
+#define playing 0
+#define lost 1
+
 struct gameBoard
 {
 	int size;
@@ -20,6 +23,7 @@ int* getBoard(int n);
 void putNewValue(struct gameBoard arg);
 int* persoBoard(int* tab, int size);
 struct gameBoard initBoard(int n);
+struct game initGame(int n);
 void printSep(int n);
 void printScore(struct game arg);
 void printBoard(int* tab, int n);

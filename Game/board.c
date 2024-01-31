@@ -47,23 +47,18 @@ struct gameBoard initBoard(int n)
 	return game;
 }
 
-/*int* strToBoard(char* s, int size)
+struct game initGame(int n)
 {
-	int* res = malloc(size*size*sizeof(int));
-	int i = 0;
-	int y = 0;
-	int x = 0;
-	while(s[i] != 0)
+	int startScore = 0;
+	struct game res = 
 	{
-		if(s[i] == '\')
-		{
-			y++;
-			x = 0;
-		}
-		i++;
-	}
+		.score = &startScore,
+		.size = n,
+		.board = initBoard(n),
+		.status = playing,
+	};
 	return res;
-}*/
+}
 
 void printScore(struct game arg)
 {

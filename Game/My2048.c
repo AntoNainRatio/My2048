@@ -2,12 +2,10 @@
 #include <stdio.h>
 #include <time.h>
 #include <string.h>
+#include <unistd.h> 
 #include "board.h"
 #include "control.h"
 #include "master.h"
-
-#define playing 0
-#define lost 1
 
 /*struct game
 {
@@ -34,16 +32,21 @@ int play()
 		/*
 		 *		DEBUG 4 predictions
 		 *
-		 * printf("Test Move:\n");
+		 */
+		printf("Test Move:\n");
+		printf("============================================================\n");
 		printf("Up\n");
-		printBoard(boardUp(partie.board),partie.board.size);
+		printAll(*boardUp(partie));
+		printf("============================================================\n");
 		printf("Down\n");
-		printBoard(boardDown(partie.board),partie.board.size);
+		printAll(*boardDown(partie));
+		printf("============================================================\n");
 		printf("Left\n");
-		printBoard(boardLeft(partie.board),partie.board.size);
+		printAll(*boardLeft(partie));
+		printf("============================================================\n");
 		printf("Right\n");
-		printBoard(boardRight(partie.board),partie.board.size);
-		*/
+		printAll(*boardRight(partie));
+		
 		if(possibleMove(partie.board) == 0)
 		{
 			partie.status = 1;
@@ -98,6 +101,7 @@ int randomBot(int n)
 			putNewValue(partie.board);
 		}
 		nbMove += 1;
+		usleep(500000);
 	}
 	if(nbMove % n != 0)
 	{
@@ -143,6 +147,7 @@ int prioBot(int n)
 				}
 			}
 		}
+		usleep(500000);
 		if(isFull(partie.board) == 1)
 		{
 			putNewValue(partie.board);
