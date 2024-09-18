@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
+#include <cairo.h>
+#include <gtk/gtk.h>
 #include "board.h"
 
 int* getBoard(int n)
@@ -9,111 +12,53 @@ int* getBoard(int n)
 	return res;
 }
 
-void putNewValue(struct gameBoard arg)
+int mul(int* a, int* b)
 {
-	int n = arg.size;
-	int *board = arg.board;
-	int x = rand() % n;
-	int y = rand() % n;
-	while(board[y*n+x] != 0)
+	int res = 0;
+	for(int y = 0; y < SIZE; y++)
 	{
-		x=rand() % n;
-		y=rand() % n; 
+		for(int x = 0; x < SIZE; x++)
+		{
+			res += a[y * SIZE +x] * b[y * SIZE + x];
+		}
 	}
-	int new = rand()%8;
-	board[y*n+x]=(new >= 2 ? 1 : 2)*2;
-}
-
-int* persoBoard(int* tab, int size)
-{
-	tab[0*size+0]=64;
-	tab[1*size+0]=32;
-	tab[2*size+0]=32;
-	tab[3*size+0]=0;
-	return tab;
-}
-
-struct gameBoard initBoard(int n)
-{
-	int *board = getBoard(n);
-	struct gameBoard game =
-	{
-		.size = n,
-		.board = board,
-	};
-	game.board = persoBoard(game.board,game.size);
-	putNewValue(game);
-	putNewValue(game);
-	return game;
-}
-
-struct game initGame(int n)
-{
-	int startScore = 0;
-	struct game res = 
-	{
-		.score = &startScore,
-		.size = n,
-		.board = initBoard(n),
-		.status = playing,
-	};
 	return res;
 }
 
-void printScore(struct game arg)
+int* getCopy(int* b)
 {
-	printf("Score : %d\n",*arg.score);
-}
-
-void printSep(int n)
-{
-	for(int i = 0; i < n; i++)
+	int* res = malloc(SIZE*SIZE*sizeof(int));
+	for(int y = 0; y < SIZE; y++)
 	{
-		printf("=====");
-	}
-	printf("\n");
-	}
-
-void printBoard(int* tab,int n)
-{
-	if(tab == NULL)
-	{
-		printf("Not valid move\n");
-	}
-	else
-	{
-		int *board = tab;
-		for(int i = 0; i < n; i++)
+		for(int x = 0; x < SIZE; x++)
 		{
-			for(int j = 0; j < n; j++)
-			{
-				printf("%04d ", board[i * n + j]);
-			}
-			printf("\n");
+			res[y * SIZE + x] = b[y * SIZE + x];
 		}
 	}
+	return res;
 }
 
-void printAll(struct game arg)
+void putNewValue(int* board)
 {
-	int n = arg.size;
-	printSep(n);
-	printf("- My 2048 Game -\n");
-	printScore(arg);
-	printSep(n);
-	printBoard(arg.board.board,arg.board.size);
-	printSep(n);
+	int x = rand() % SIZE;
+	int y = rand() % SIZE;
+	while(board[y*SIZE+x] != 0)
+	{
+		x=rand() % SIZE;
+		y=rand() % SIZE;
+	}
+	int new = rand()%8;
+	board[y*SIZE+x]=(new > 2 ? 1 : 2)*2;
 }
 
-int isFull(struct gameBoard arg)
+int isFull(int* b)
 {
-	int* board = arg.board;
-	int n = arg.size;
+	int n = SIZE;
 	for(int i = 0; i < n; i++)
 	{
 		for(int j = 0; j < n; j++)
 		{
-			if(board[i*n + j] == 0)
+			if(b[i*n + j] == 0)
 			{
 				return 1;
 			}
@@ -122,15 +67,9 @@ int isFull(struct gameBoard arg)
 	return 0;
 }
 
-void freeBoard(struct gameBoard arg)
+int possibleMove(int* board)
 {
-	free(arg.board);
-}
-
-int possibleMove(struct gameBoard arg)
-{
-	int n = arg.size;
-	int *board = arg.board;
+	int n = SIZE;
 	for(int i = 0; i < n; i++)
 	{
 		for(int j = 0; j < n; j++)
@@ -160,22 +99,125 @@ int possibleMove(struct gameBoard arg)
 	return 0;
 }
 
-
-/*int main(int argc, char** argv)
+void drawBoard(int* b, int screenWidth, int screenHeight, cairo_t *cr)
 {
-	if(argc != 2)
+	cairo_set_source_rgba(cr, 0.73, 0.69, 0.63, 1);
+	cairo_rectangle(cr, 0, 0, screenWidth, screenHeight);
+	cairo_fill(cr);
+	int screenSize;
+	if(screenWidth < screenHeight)
 	{
-		printf("board.c error: Too much or arg missing\n");
-		return -1;
+		screenSize = screenWidth;
 	}
-	int size = atoi(argv[1]);
-	if(size<=0 || size >= 10)
+	else
 	{
-		printf("board.c error: A respectable size is between 1 and 9 \n");
-		return -1;
+		screenSize = screenHeight;
 	}
-	srand(time(NULL));
-	struct gameBoard newBoard = initBoard(size);
-	printBoard(newBoard);
-	free(newBoard.board);
-}*/
+
+	int borderSize = screenSize / 100;
+	int tileSize = screenSize / 4.2;
+
+	int yScreen = borderSize;
+
+	for(int y = 0; y < SIZE; y++)
+	{
+		int xScreen = borderSize;
+		for(int x = 0; x < SIZE; x++)
+		{
+			int p = 1;
+			int n = 0;
+			while(p < b[y * SIZE + x])
+			{
+				p = p * 2;
+				n++;
+			}
+			switch(n)
+			{
+				case(0):
+					cairo_set_source_rgba(cr, 0.80, 0.76, 0.71, 1);
+					break;
+				case(1):
+					cairo_set_source_rgba(cr, 0.93, 0.89, 0.85, 1);
+					break;
+				case(2):
+					cairo_set_source_rgba(cr, 0.93, 0.88, 0.78, 1);
+					break;
+				case(3):
+					cairo_set_source_rgba(cr, 0.95, 0.70, 0.47, 1);
+					break;
+				case(4):
+					cairo_set_source_rgba(cr, 0.96, 0.58, 0.39,1);
+					break;
+				case(5):
+					cairo_set_source_rgba(cr, 0.96, 0.49, 0.37, 1);
+					break;
+				case(6):
+					cairo_set_source_rgba(cr, 0.96, 0.37, 0.23, 1);
+					break;
+				case(7):
+					cairo_set_source_rgba(cr, 0.96, 0.81, 0.44, 1);
+					break;
+				case(8):
+					cairo_set_source_rgba(cr, 0.93, 0.80, 0.38, 1);
+					break;
+				case(9):
+					cairo_set_source_rgba(cr, 0.93, 0.78, 0.33, 1);
+					break;
+				case(10):
+					cairo_set_source_rgba(cr, 0.93, 0.77, 0.24, 1);
+					break;
+				case(11):
+					cairo_set_source_rgba(cr, 0.93, 0.76, 0.18, 1);
+					break;
+				case(12):
+					cairo_set_source_rgba(cr, 0.24, 0.23, 0.20, 1);
+				default:
+					cairo_set_source_rgba(cr, 0, 0, 0, 1);
+					break;
+			}
+			cairo_rectangle(cr, xScreen, yScreen, tileSize, tileSize);
+			cairo_fill(cr);
+
+			if(b[y * SIZE + x] > 0)
+			{
+				char str[8];
+				snprintf(str, sizeof(str), "%d", b[y * SIZE + x]);
+
+				int v = (n > 2) ? 1 : 0.8;
+				cairo_set_source_rgba(cr, v, v, v, 1);
+
+				cairo_set_font_size(cr, tileSize / 4);
+
+				cairo_text_extents_t extents;
+				cairo_text_extents(cr, str, &extents); // Obtenir les dimensions du texte
+				double xText = xScreen + (tileSize - extents.width) / 2 - extents.x_bearing;
+                double yText = yScreen + (tileSize - extents.height) / 2 - extents.y_bearing;
+
+                // Dessiner le texte au centre de la tuile
+                cairo_move_to(cr, xText, yText);
+                cairo_show_text(cr, str);
+
+			}
+
+			xScreen += tileSize + borderSize;
+		}
+		yScreen += tileSize + borderSize;
+	}
+}
+
+void printBoard(int* b)
+{
+	for(int y = 0; y < SIZE; y++)
+	{
+		for(int x = 0; x < SIZE; x++)
+		{
+			g_print("%d",b[y * SIZE + x]);
+		}
+		g_print("\n");
+	}
+}
+
+void freeBoard(int* b)
+{
+	free(b);
+}

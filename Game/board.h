@@ -1,35 +1,18 @@
 #ifndef BOARD_H
 #define BOARD_H
 
-#define playing 0
-#define lost 1
+#include <cairo.h>
 
-struct gameBoard
-{
-	int size;
-	int* board;
-};
-
-struct game
-{
-	int* score;
-	int size;
-	struct gameBoard board;
-	int status;
-};
-
+#define SIZE 4
 
 int* getBoard(int n);
-void putNewValue(struct gameBoard arg);
-int* persoBoard(int* tab, int size);
-struct gameBoard initBoard(int n);
-struct game initGame(int n);
-void printSep(int n);
-void printScore(struct game arg);
-void printBoard(int* tab, int n);
-void printAll(struct game arg);
-int isFull(struct gameBoard arg);
-void freeBoard(struct gameBoard arg);
-int possibleMove(struct gameBoard arg);
+int mul(int* a, int* b);
+int* getCopy(int* b);
+void putNewValue(int* board);
+int isFull(int* b);
+int possibleMove(int* board);
+void drawBoard(int* b, int screenWidth, int screenHeight, cairo_t *cr);
+void printBoard(int* b);
+void freeBoard(int* b);
 
 #endif
