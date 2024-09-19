@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-#include <cairo.h>
+//#include <cairo.h>
 #include <gtk/gtk.h>
 #include "board.h"
 
@@ -47,8 +47,8 @@ void putNewValue(int* board)
 		x=rand() % SIZE;
 		y=rand() % SIZE;
 	}
-	int new = rand()%8;
-	board[y*SIZE+x]=(new > 2 ? 1 : 2)*2;
+	int new = rand()%10;
+	board[y*SIZE+x]=(new > 0 ? 1 : 2)*2;
 }
 
 int isFull(int* b)

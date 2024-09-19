@@ -1,5 +1,5 @@
 #include <gtk/gtk.h>
-#include <cairo.h>
+//#include <cairo.h>
 #include <stdbool.h>
 #include "board.h"
 #include "control.h"
@@ -8,7 +8,9 @@
 static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
 	int* b = user_data;
-	drawBoard(b, 900, 900, cr);
+	int width = gtk_widget_get_allocated_width(widget);
+	int height = gtk_widget_get_allocated_height(widget);
+	drawBoard(b, width, height, cr);
 
 	return FALSE;
 }
