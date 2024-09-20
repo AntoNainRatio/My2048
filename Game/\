@@ -40,7 +40,7 @@ int getMax(int* b)
 {
 	int res = mul(b,bottomLeft);
 
-	/*int tmp1 = mul(b,bottomRight);
+	int tmp1 = mul(b,bottomRight);
 	if(tmp1 > res)
 	{
 		res = tmp1;
@@ -56,7 +56,7 @@ int getMax(int* b)
 	if(tmp3 > res)
 	{
 		res = tmp3;
-	}*/
+	}
 
 	return res;
 }
@@ -91,7 +91,7 @@ int* getSpawns(int* b, int* l)
 
 
 
-long double rec_depth(int* b, long double preProba, int depth)
+float rec_depth(int* b, float preProba, int depth)
 {
 	if(depth == 0)
 	{
@@ -99,8 +99,7 @@ long double rec_depth(int* b, long double preProba, int depth)
 	}
 	else
 	{
-		long double res = 0;
-		int n;
+		float res = 0;
 
 		// UP
 
@@ -108,43 +107,44 @@ long double rec_depth(int* b, long double preProba, int depth)
 		int vUp = moveUp(up);
 		if(vUp != -1)
 		{
+			int n;
 			int* spawns = getSpawns(b, &n);
 			
 			for(int i = 0; i < n*2; i += 2)
 			{
 				int* tmpB = getCopy(up);
 				tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-				//g_print("preProba = %Lf\n",preProba);
-				res += rec_depth(tmpB, ((preProba / n)  * 0.9), depth - 1);
+				res += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 				free(tmpB);
 
 				int* tmpB1 = getCopy(up);
 				tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-				res += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+				res += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 				free(tmpB1);
 			}
 			free(spawns);
 		}
 		free(up);
 
-			// DOWN
+		// DOWN
 
 		int* down = getCopy(b);
 		int vDown = moveDown(down);
 		if(vDown != -1)
 		{
+			int n;
 			int* spawns = getSpawns(b, &n);
 			
 			for(int i = 0; i < n*2; i += 2)
 			{
 				int* tmpB = getCopy(down);
 				tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-				res += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+				res += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 				free(tmpB);
 
 				int* tmpB1 = getCopy(down);
 				tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-				res += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+				res += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 				free(tmpB1);
 			}
 			free(spawns);
@@ -157,18 +157,19 @@ long double rec_depth(int* b, long double preProba, int depth)
 		int vLeft = moveLeft(left);
 		if(vLeft != -1)
 		{
+			int n;
 			int* spawns = getSpawns(b, &n);
 			
 			for(int i = 0; i < n*2; i += 2)
 			{
 				int* tmpB = getCopy(left);
 				tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-				res += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+				res += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 				free(tmpB);
 
 				int* tmpB1 = getCopy(left);
 				tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-				res += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+				res += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 				free(tmpB1);
 			}
 			free(spawns);
@@ -181,18 +182,19 @@ long double rec_depth(int* b, long double preProba, int depth)
 		int vRight = moveRight(right);
 		if(vRight != -1)
 		{
+			int n;
 			int* spawns = getSpawns(b, &n);
 			
 			for(int i = 0; i < n*2; i += 2)
 			{
 				int* tmpB = getCopy(right);
 				tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-				res += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+				res += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 				free(tmpB);
 
 				int* tmpB1 = getCopy(right);
 				tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-				res += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+				res += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 				free(tmpB1);
 			}
 			free(spawns);
@@ -206,29 +208,29 @@ long double rec_depth(int* b, long double preProba, int depth)
 
 
 
-long double* chapo(int* b)
+float* chapo(int* b)
 {
-	long double* res = calloc(4,sizeof(long double));
-	int depth = 4;
-	long double preProba = 1;
-	int n;
+	float* res = calloc(4,sizeof(float));
+	int depth = 3;
+	int preProba = 1;
 
 	int* up = getCopy(b);
 	int vUp = moveUp(up);
 	if(vUp != -1)
 	{
+		int n;
 		int* spawns = getSpawns(b, &n);
 		
 		for(int i = 0; i < n*2; i += 2)
 		{
 			int* tmpB = getCopy(up);
 			tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-			res[0] += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+			res[0] += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 			free(tmpB);
 
 			int* tmpB1 = getCopy(up);
 			tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-			res[0] += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+			res[0] += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 			free(tmpB1);
 		}
 		free(spawns);
@@ -243,18 +245,19 @@ long double* chapo(int* b)
 	int vDown = moveDown(down);
 	if(vDown != -1)
 	{
+		int n;
 		int* spawns = getSpawns(b, &n);
 		
 		for(int i = 0; i < n*2; i += 2)
 		{
 			int* tmpB = getCopy(down);
 			tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-			res[1] += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+			res[1] += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 			free(tmpB);
 
 			int* tmpB1 = getCopy(down);
 			tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-			res[1] += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+			res[1] += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 			free(tmpB1);
 		}
 		free(spawns);
@@ -269,18 +272,19 @@ long double* chapo(int* b)
 	int vLeft = moveLeft(left);
 	if(vLeft != -1)
 	{
+		int n;
 		int* spawns = getSpawns(b, &n);
 		
 		for(int i = 0; i < n*2; i += 2)
 		{
 			int* tmpB = getCopy(left);
 			tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-			res[2] += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+			res[2] += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 			free(tmpB);
 
 			int* tmpB1 = getCopy(left);
 			tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-			res[2] += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+			res[2] += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 			free(tmpB1);
 		}
 		free(spawns);
@@ -295,18 +299,19 @@ long double* chapo(int* b)
 	int vRight = moveRight(right);
 	if(vRight != -1)
 	{
+		int n;
 		int* spawns = getSpawns(b, &n);
 		
 		for(int i = 0; i < n*2; i += 2)
 		{
 			int* tmpB = getCopy(right);
 			tmpB[ (spawns[i+1]) * SIZE + (spawns[i])] = 2;
-			res[3] += rec_depth(tmpB, ((preProba / n) * 0.9), depth - 1);
+			res[3] += rec_depth(tmpB, (preProba * (float)(1 / n) * 0.9), depth - 1);
 			free(tmpB);
 
 			int* tmpB1 = getCopy(right);
 			tmpB1[ (spawns[i+1]) * SIZE + (spawns[i]) ] = 4;
-			res[3] += rec_depth(tmpB1, ((preProba / n) * 0.1), depth -1);
+			res[3] += rec_depth(tmpB1, (preProba * (float)(1 / n) * 0.1), depth -1);
 			free(tmpB1);
 		}
 		free(spawns);
@@ -319,45 +324,5 @@ long double* chapo(int* b)
 
 
 	return res;
-}
-
-void doMove(int* b)
-{
-	g_print("==========================\n");
-	long double* moveScore = chapo(b);
-	for(int i = 0; i < 4; i++)
-	{
-		g_print("moveScore[%d] = %Lf\n",i,moveScore[i]);
-	}
-	int iMax = 0;
-	int i = 1;
-	while (i < 4)
-	{
-		if(moveScore[i] > moveScore[iMax])
-		{
-			iMax = i;
-		}
-		i++;
-	}
-
-	switch(iMax)
-	{
-		case 0:
-			g_print("Last move: Up\n");
-			moveUp(b);
-			break;
-		case 1:
-			g_print("Last move: Down\n");
-			moveDown(b);
-			break;
-		case 2:
-			g_print("Last move: Left\n");
-			moveLeft(b);
-			break;
-		default:
-			g_print("Last move: Right\n");
-			moveRight(b);
-			break;
-	}
 }
 

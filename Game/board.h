@@ -9,6 +9,7 @@ int* getBoard(int n);
 int mul(int* a, int* b);
 int* getCopy(int* b);
 void putNewValue(int* board);
+int getNbVide(int* b);
 int isFull(int* b);
 int possibleMove(int* board);
 void drawBoard(int* b, int screenWidth, int screenHeight, cairo_t *cr);

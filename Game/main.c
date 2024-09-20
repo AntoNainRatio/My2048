@@ -1,5 +1,4 @@
 #include <gtk/gtk.h>
-//#include <cairo.h>
 #include <stdbool.h>
 #include "board.h"
 #include "control.h"
@@ -19,7 +18,7 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
 	int* b = user_data;
-	int verif = -1;
+	/*int verif = -1;
 	if(event->keyval == GDK_KEY_Left)
 	{
 		verif = moveLeft(b);
@@ -40,7 +39,14 @@ gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer user_dat
 	{
 		putNewValue(b);
 		gtk_widget_queue_draw(widget);
+	}*/
+	if(possibleMove(b) == 1)
+	{
+		doMove(b);
+		putNewValue(b);
+		gtk_widget_queue_draw(widget);
 	}
+
 	return TRUE;
 }
 
@@ -48,6 +54,11 @@ gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer user_dat
 
 int main (int argc, char *argv[])
 {
+	if(argc > 2)
+	{
+		return -1;
+	}
+
 	gtk_init (&argc, &argv);
 
 	srand(time(NULL));
@@ -71,8 +82,10 @@ int main (int argc, char *argv[])
 	GtkDrawingArea* area = GTK_DRAWING_AREA(gtk_builder_get_object(builder,"drawing_area"));
 
 	int* b = getBoard(SIZE);
-	putNewValue(b);
-	putNewValue(b);
+	for(int i = 0; i < 2; i++)
+	{
+		putNewValue(b);
+	}
 
 	g_signal_connect(area, "draw", G_CALLBACK(on_draw), b);
 	g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
@@ -82,7 +95,8 @@ int main (int argc, char *argv[])
 	g_object_unref(builder);
 
 	gtk_main();
-
+	
+	
 	gtk_widget_destroy(GTK_WIDGET(builder));
 	gtk_widget_destroy(GTK_WIDGET(area));
 	gtk_widget_destroy(GTK_WIDGET(window));

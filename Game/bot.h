@@ -2,6 +2,9 @@
 #define BOT_H
 
 int getMax(int* b);
-int* getDephtsMovesValue(int* b,int d);
+int* getSpawns(int* b, int* l);
+long double rec_depth(int* b, long double preProba, int depth);
+long double* chapo(int* b);
+void doMove(int * b);
 
 #endif

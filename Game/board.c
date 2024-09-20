@@ -51,20 +51,29 @@ void putNewValue(int* board)
 	board[y*SIZE+x]=(new > 0 ? 1 : 2)*2;
 }
 
-int isFull(int* b)
+int getNbVide(int* b)
 {
-	int n = SIZE;
-	for(int i = 0; i < n; i++)
+	int res = 0;
+	for(int y = 0; y < SIZE; y++)
 	{
-		for(int j = 0; j < n; j++)
+		for(int x = 0; x < SIZE; x++)
 		{
-			if(b[i*n + j] == 0)
+			if(b[y * SIZE + x] == 0)
 			{
-				return 1;
+				res++;
 			}
 		}
 	}
-	return 0;
+	return res;
+}
+
+int isFull(int* b)
+{
+	if(getNbVide(b) == 0)
+	{
+		return 0;
+	}
+	return -1;
 }
 
 int possibleMove(int* board)

@@ -199,4 +199,3 @@ int moveRight(int* tab)
 	free(m);
 	return valid;
 }
-
