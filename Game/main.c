@@ -95,8 +95,14 @@ int main (int argc, char *argv[])
 	g_object_unref(builder);
 
 	gtk_main();
-	
-	
+
+        while (possibleMove(b) == 1)
+	{
+		doMove(b);
+		putNewValue(b);
+		gtk_widget_queue_draw(area);
+	}
+
 	gtk_widget_destroy(GTK_WIDGET(builder));
 	gtk_widget_destroy(GTK_WIDGET(area));
 	gtk_widget_destroy(GTK_WIDGET(window));
