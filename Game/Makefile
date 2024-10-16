@@ -3,7 +3,7 @@ CFLAGS = `pkg-config --cflags gtk+-3.0` -Wall -O3
 LDFLAGS = `pkg-config --libs gtk+-3.0` -lm
 LDLIBS=-lcriterion
 TARGET = my2048
-SRCS = src/*.c
+SRC = src/*.c tests/testBot.c
 OBJ=$(SRC:.c=.o)
 
 all: $(TARGET)
@@ -11,8 +11,7 @@ all: $(TARGET)
 $(TARGET): $(SRCS)
 	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS) $(LDFLAGS)
 
-check: OBJ+=tests/testBot.o
-check: $(OBJ) tests/testBot.o
+check: $(OBJ)
 	$(CC) -o  $@ $^ $(LDLIBS)
 	./check
 

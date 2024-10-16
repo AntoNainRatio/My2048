@@ -1,8 +1,8 @@
 #include <gtk/gtk.h>
 #include <stdbool.h>
-#include "board.h"
-#include "control.h"
-#include "bot.h"
+#include "../include/board.h"
+#include "../include/control.h"
+#include "../include/bot.h"
 
 static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {

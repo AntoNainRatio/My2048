@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
-//#include <cairo.h>
+#include <cairo.h>
 #include <gtk/gtk.h>
-#include "board.h"
+#include "../include/board.h"
 
 int* getBoard(int n)
 {

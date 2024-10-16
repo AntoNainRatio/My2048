@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "board.h"
-#include "control.h"
+#include "../include/board.h"
+#include "../include/control.h"
 
 
 int moveUp(int* tab)

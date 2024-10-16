@@ -1,4 +1,4 @@
-#include "../include/parseStr.h"
+#include "../include/parse.h"
 #include "../include/bot.h"
 #include <criterion/assert.h>
 #include <criterion/criterion.h>

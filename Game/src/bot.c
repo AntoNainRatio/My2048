@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "board.h"
-#include "control.h"
-#include "bot.h"
+#include "../include/board.h"
+#include "../include/control.h"
+#include "../include/bot.h"
 
 int bottomLeft[SIZE*SIZE] = 
 {

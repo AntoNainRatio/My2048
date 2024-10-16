@@ -1,13 +1,14 @@
 #include "../include/board.h"
 
-int *parseStr(char * str)
+int *parseStr(char *str)
 {
-    int *res = initBoard(SIZE);
+    int *res = getBoard(SIZE);
     int y = 0;
     int x = 0;
+    int tmp = 0;
     for (int i = 0; str[i] != '\0'; i++)
     {
-        int tmp = 0;
+        tmp = 0;
         if (str[i] == ' ')
         {
             res[y * SIZE + x] = tmp;
