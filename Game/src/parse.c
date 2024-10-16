@@ -8,7 +8,6 @@ int *parseStr(char *str)
     int tmp = 0;
     for (int i = 0; str[i] != '\0'; i++)
     {
-        tmp = 0;
         if (str[i] == ' ')
         {
             res[y * SIZE + x] = tmp;
@@ -24,7 +23,7 @@ int *parseStr(char *str)
         }
         else
         {
-            tmp = tmp + str[i] - '0';
+            tmp = tmp * 10 + str[i] - '0';
         }
     }
     res[y * SIZE + x] = tmp;

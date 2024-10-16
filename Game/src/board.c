@@ -220,7 +220,7 @@ void printBoard(int* b)
 	{
 		for(int x = 0; x < SIZE; x++)
 		{
-			g_print("%d",b[y * SIZE + x]);
+			g_print("%d ",b[y * SIZE + x]);
 		}
 		g_print("\n");
 	}
