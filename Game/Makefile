@@ -3,24 +3,26 @@ CFLAGS = `pkg-config --cflags gtk+-3.0` -Wall -O3
 LDFLAGS = `pkg-config --libs gtk+-3.0` -lm
 LDLIBS=
 TARGET = my2048
-SRC = src/board.c src/bot.c src/control.c src/parse.c
+SRC = src/board.c src/bot.c src/control.c src/parse.c src/main.c
 OBJ=$(SRC:.c=.o)
 
 all: $(TARGET)
 
-$(TARGET): SRC += src/main.c
-$(TARGET): $(OBJ) src/main.o
-	$(CC) -o $@ $(LDFLAGS) $(LDLIBS) $^
+$(TARGET): $(OBJ)
+	$(CC) $(CFLAGS) -o $@ $(OBJ) $(LDFLAGS) $(LDLIBS)
 
-check: SRC += tests/testBot.c
 check: LDLIBS += -lcriterion
-check: $(OBJ) tests/testBot.o
-	$(CC) -o  $@ $^ $(LDLIBS) $(LDFLAGS)
+check_SRC = test/testBot.c
+check_OBJ = $(check_SRC:.c=.o) $(OBJ)
+check: $(check_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 	./check
 
-testParse: SRC += tests/testParse.c
-testParse: $(OBJ) tests/testParse.o
-	$(CC) -o $@ $^ $(LDLIBS) $(LDFLAGS)
+testParse: LDLIBS += -lcriterion
+testParse_SRC = tests/testParse.c
+testParse_OBJ = $(testParse_SRC:.c=.o) $(OBJ)
+testParse: $(testParse_OBJ)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDLIBS) $(LDFLAGS)
 	./testParse
 
 clean:
