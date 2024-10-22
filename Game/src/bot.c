@@ -354,4 +354,3 @@ void doMove(int* b)
 			break;
 	}
 }
-

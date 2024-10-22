@@ -18,7 +18,7 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
 	int* b = user_data;
-	/*int verif = -1;
+	int verif = -1;
 	if(event->keyval == GDK_KEY_Left)
 	{
 		verif = moveLeft(b);
@@ -39,14 +39,13 @@ gboolean on_key_release(GtkWidget *widget, GdkEventKey *event, gpointer user_dat
 	{
 		putNewValue(b);
 		gtk_widget_queue_draw(widget);
-	}*/
-	if(possibleMove(b) == 1)
+	}
+	/*if(possibleMove(b) == 1)
 	{
 		doMove(b);
 		putNewValue(b);
 		gtk_widget_queue_draw(widget);
-	}
-
+	}*/
 	return TRUE;
 }
 
@@ -58,7 +57,17 @@ int main (int argc, char *argv[])
 	{
 		return -1;
 	}
-
+        if (argc == 2 && strcmp(argv[1], "--help") == 0)
+        {
+            printf("Here are flags: \"--help\" for help\n");
+            printf("                \"--bot\" for bot\n");
+            printf("                no arg for playing\n");
+            return 0;
+        }
+        if (argc == 2 && strcmp(argv[1], "--bot") != 0)
+        {
+            return -1;
+        }
 	gtk_init (&argc, &argv);
 
 	srand(time(NULL));
@@ -96,13 +105,15 @@ int main (int argc, char *argv[])
 
 	gtk_main();
 
-        while (possibleMove(b) == 1)
-	{
-		doMove(b);
-		putNewValue(b);
-		gtk_widget_queue_draw(area);
-	}
-
+        if (argc == 2)
+        {
+            while (isFull(b) != 0)
+            {
+                doMove(b);
+                putNewValue(b);
+		gtk_widget_queue_draw(GTK_WIDGET(window));
+            }
+        }
 	gtk_widget_destroy(GTK_WIDGET(builder));
 	gtk_widget_destroy(GTK_WIDGET(area));
 	gtk_widget_destroy(GTK_WIDGET(window));
