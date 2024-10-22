@@ -5,6 +5,12 @@
 #include "../include/bot.h"
 #include "../include/control.h"
 
+struct botData
+{
+    GtkWindow *window;
+    int *board;
+};
+
 static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
 {
     int *b = user_data;
@@ -12,6 +18,22 @@ static gboolean on_draw(GtkWidget *widget, cairo_t *cr, gpointer user_data)
     int height = gtk_widget_get_allocated_height(widget);
     drawBoard(b, width, height, cr);
 
+    return FALSE;
+}
+
+static gboolean bot_play(gpointer user_data)
+{
+    struct botData *bD = user_data;
+    if (possibleMove(bD->board) == 1)
+    {
+        doMove(bD->board);
+        putNewValue(bD->board);
+        printBoard(bD->board);
+        GtkWidget *area = gtk_bin_get_child(GTK_BIN(bD->window));
+        gtk_widget_queue_draw(area);
+        g_print("+1\n");
+        return TRUE;
+    }
     return FALSE;
 }
 
@@ -41,12 +63,6 @@ gboolean on_key_release(GtkWidget *widget, GdkEventKey *event,
         putNewValue(b);
         gtk_widget_queue_draw(widget);
     }
-    /*if(possibleMove(b) == 1)
-      {
-      doMove(b);
-      putNewValue(b);
-      gtk_widget_queue_draw(widget);
-      }*/
     return TRUE;
 }
 
@@ -98,23 +114,21 @@ int main(int argc, char *argv[])
 
     g_signal_connect(area, "draw", G_CALLBACK(on_draw), b);
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
-    g_signal_connect(window, "key-release-event", G_CALLBACK(on_key_release),
-                     b);
+    if (argc == 1)
+    {
+        g_signal_connect(window, "key-release-event", G_CALLBACK(on_key_release), b);
+    }
+    else
+    {
+        struct botData bD = { window, b };
+        g_timeout_add(500, bot_play, &bD);
+    }
     gtk_widget_show_all(GTK_WIDGET(window));
 
     g_object_unref(builder);
 
     gtk_main();
 
-    /*if (argc == 2)
-      {
-      while (isFull(b) != 0)
-      {
-      doMove(b);
-      putNewValue(b);
-      gtk_widget_queue_draw(GTK_WIDGET(window));
-      }
-      }*/
     gtk_widget_destroy(GTK_WIDGET(builder));
     gtk_widget_destroy(GTK_WIDGET(area));
     gtk_widget_destroy(GTK_WIDGET(window));
