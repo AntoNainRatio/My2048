@@ -35,6 +35,7 @@ static gboolean bot_play(gpointer user_data)
         // g_print("+1\n");
         return TRUE;
     }
+
     return FALSE;
 }
 
@@ -122,7 +123,7 @@ int main(int argc, char *argv[])
     else
     {
         struct botData bD = { window, b };
-        g_timeout_add(500, bot_play, &bD);
+        g_timeout_add(100, bot_play, &bD);
     }
     gtk_widget_show_all(GTK_WIDGET(window));
 
