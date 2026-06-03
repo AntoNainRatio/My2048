@@ -4,16 +4,6 @@ An implementation of the 2048 game in C with a **GTK+3 graphical interface** and
 
 ---
 
-## Table of Contents
-
-- [Features](#features)
-- [Expectimax Algorithm](#expectimax-algorithm)
-- [Installation](#installation)
-- [Compilation](#compilation)
-- [Usage](#usage)
-
----
-
 ## Features
 
 ### Classic 2048 Game
