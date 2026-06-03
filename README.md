@@ -29,6 +29,8 @@ An implementation of the 2048 game in C with a **GTK+3 graphical interface** and
 - **Multi-threading**: Evaluates 4 directions in parallel (4x faster)
 - **Deep Search**: Evaluates up to 4 moves ahead
 
+You can modify the depth of the search via DEPTH_MAX in `/src/bot.c`.
+
 ---
 
 ## Expectimax Algorithm
