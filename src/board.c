@@ -191,7 +191,7 @@ void drawBoard(int *b, int screenWidth, int screenHeight, cairo_t *cr)
             if (b[y * SIZE + x] > 0)
             {
                 char str[8];
-                snprintf(str, sizeof(str), "%d", b[y * SIZE + x]);
+                //snprintf(str, sizeof(str), "%d", b[y * SIZE + x]);
 
                 int v = (n > 2) ? 1 : 0.8;
                 cairo_set_source_rgba(cr, v, v, v, 1);
