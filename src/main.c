@@ -109,6 +109,9 @@ int main(int argc, char *argv[])
         GTK_DRAWING_AREA(gtk_builder_get_object(builder, "drawing_area"));
 
     int *b = getBoard(SIZE);
+    b[0]=2;
+    b[1]=2;
+    b[2]=4;
     for (int i = 0; i < 2; i++)
     {
         putNewValue(b);

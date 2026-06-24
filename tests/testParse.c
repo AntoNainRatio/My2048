@@ -6,8 +6,22 @@
 
 int main(void)
 {
-    int  *a = parseStr("1 2 3 4\n5 6 7 8\n9 10 11 12\n13 14 15 16");
-    printBoard(a);
+    int  *a = parseStr(
+            "1 2 3 4\n"
+            "5 6 7 8\n"
+            "9 10 11 12\n"
+            "13 14 15 16");
+
+    for (int i = 0; i < 16; i++)
+    {
+        if (a[i] != i + 1)
+        {
+
+            free(a);
+            return 1;
+        }
+    }
+
     free(a);
     return 0;
 }

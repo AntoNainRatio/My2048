@@ -34,6 +34,7 @@ int moveUp(int *tab)
                         && m[(y - minus) * l + x] == 0)
                     {
                         tab[(y - minus) * l + x] *= 2;
+                        m[(y - minus) * l + x] = 1;
                         //*arg.score = *arg.score + tab[(y-minus)*l+x];
                         tab[y * l + x] = 0;
                         valid = 0;
@@ -84,6 +85,7 @@ int moveDown(int *tab)
                         && m[(y + plus) * l + x] == 0)
                     {
                         tab[(y + plus) * l + x] *= 2;
+                        m[(y + plus) * l + x] = 1;
                         //*arg.score = *arg.score + tab[(y+plus)*l+x];
                         tab[y * l + x] = 0;
                         m[(y + plus) * l + x] = 1;
@@ -134,6 +136,7 @@ int moveLeft(int *tab)
                         && m[y * l + x - minus] == 0)
                     {
                         tab[y * l + x - minus] *= 2;
+                        m[y * l + x - minus] = 1;
                         //*arg.score = *arg.score + tab[y*l+x-minus];
                         tab[y * l + x] = 0;
                         valid = 0;
@@ -183,6 +186,7 @@ int moveRight(int *tab)
                         && m[y * l + x + plus] == 0)
                     {
                         tab[y * l + x + plus] *= 2;
+                        m[y * l + x + plus] = 1;
                         //*arg.score = *arg.score + tab[y*l+x+plus];
                         tab[y * l + x] = 0;
                         m[y * l + x + plus] = 1;
