@@ -1,0 +1,13 @@
+name: Tests
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: buntu-24.4
+    steps:
+      - name: Install depedencies
+        run: ./install.sh
+
+      - name: Run tests
+        run: make check
