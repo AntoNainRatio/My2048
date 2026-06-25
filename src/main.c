@@ -28,11 +28,9 @@ static gboolean bot_play(gpointer user_data)
     {
         doMove(bD->board);
         putNewValue(bD->board);
-        // printBoard(bD->board);
         GtkWidget *area = gtk_bin_get_child(GTK_BIN(bD->window));
         gtk_widget_queue_draw(area);
         gtk_test_widget_wait_for_draw(area);
-        // g_print("+1\n");
         return TRUE;
     }
 
@@ -109,9 +107,6 @@ int main(int argc, char *argv[])
         GTK_DRAWING_AREA(gtk_builder_get_object(builder, "drawing_area"));
 
     int *b = getBoard(SIZE);
-    b[0]=2;
-    b[1]=2;
-    b[2]=4;
     for (int i = 0; i < 2; i++)
     {
         putNewValue(b);
