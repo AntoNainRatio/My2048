@@ -1,15 +1,20 @@
 name: Tests
 
+permissions:
+  contents: read
+
 on:
+  pull_request:
+    branches: [main]
   push:
-    branches: [main, tests]
+    branches: [tests]
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
       - name: Install depedencies
         run: bash install.sh
