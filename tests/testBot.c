@@ -7,6 +7,12 @@
 #include <string.h>
 
 
+#define UP 0
+#define DOWN 1
+#define LEFT 2
+#define RIGHT 3
+
+
 Test(test_getMax, sameScore)
 {
     int *a = parseStr(
@@ -72,4 +78,71 @@ Test(test_getMax, case2)
 
     free(a);
     free(b);
+}
+
+static int choice(int *b)
+{
+    long double *scores = chapo_threaded(b);
+    int best = 0;
+    for (int i = 1; i < 4; i++)
+    {
+        if (scores[i] > scores[best])
+        {
+            best = i;
+        }
+    }
+    free(scores);
+    return best;
+}
+
+Test(test_choice, simple)
+{
+    int *a = parseStr(
+            "4 4 2 0\n"
+            "0 0 0 0\n"
+            "0 0 0 0\n"
+            "0 0 0 0");
+
+    cr_expect(choice(a) == LEFT);
+
+    free(a);
+}
+
+Test(test_choice, simple2)
+{
+    int *a = parseStr(
+            "4 4 2 0\n"
+            "0 0 0 0\n"
+            "0 0 0 0\n"
+            "0 0 0 64");
+
+    cr_expect(choice(a) == LEFT);
+
+    free(a);
+}
+
+Test(test_choice, simple3)
+{
+    int *a = parseStr(
+            "4 4 2 0\n"
+            "0 0 0 0\n"
+            "0 0 0 0\n"
+            "2 0 0 64");
+
+    cr_expect(choice(a) == UP);
+
+    free(a);
+}
+
+Test(test_choice, simple4)
+{
+    int *a = parseStr(
+            "4 2 2 4\n"
+            "0 0 0 0\n"
+            "0 0 0 64\n"
+            "2 0 0 2");
+
+    cr_expect(choice(a) == LEFT);
+
+    free(a);
 }
