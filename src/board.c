@@ -190,7 +190,7 @@ void drawBoard(int *b, int screenWidth, int screenHeight, cairo_t *cr)
 
             if (b[y * SIZE + x] > 0)
             {
-                char str[8];
+                char str[12];
                 snprintf(str, sizeof(str), "%d", b[y * SIZE + x]);
 
                 int v = (n > 2) ? 1 : 0.8;
@@ -206,7 +206,6 @@ void drawBoard(int *b, int screenWidth, int screenHeight, cairo_t *cr)
                 double yText = yScreen + (tileSize - extents.height) / 2
                     - extents.y_bearing;
 
-                // Dessiner le texte au centre de la tuile
                 cairo_move_to(cr, xText, yText);
                 cairo_show_text(cr, str);
             }
