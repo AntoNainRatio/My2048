@@ -10,6 +10,10 @@ int *parseStr(char *str)
     {
         if (str[i] == ' ')
         {
+            while (str[i] == ' ')
+            {
+                i++;
+            }
             res[y * SIZE + x] = tmp;
             tmp = 0;
             x++;

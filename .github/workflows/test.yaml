@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: buntu-24.4
+    runs-on: ubuntu-24.04
     steps:
       - name: Install depedencies
         run: ./install.sh

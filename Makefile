@@ -17,7 +17,7 @@ testBot: tests/testBot.o $(OBJ)
 	./testBot
 
 testParse: tests/testParse.o $(OBJ)
-	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS) $(CRITERION)
 	./testParse
 
 check: testBot testParse
