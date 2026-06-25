@@ -1,13 +1,18 @@
 name: Tests
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main, tests]
+  workflow_dispatch:
 
 jobs:
   test:
-    runs-on: buntu-24.4
+    runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install depedencies
-        run: ./install.sh
+        run: bash install.sh
 
       - name: Run tests
         run: make check

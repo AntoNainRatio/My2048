@@ -6,26 +6,38 @@ int *parseStr(char *str)
     int y = 0;
     int x = 0;
     int tmp = 0;
+    int reading = 0;
     for (int i = 0; str[i] != '\0'; i++)
     {
-        if (str[i] == ' ')
+        if (str[i] >= '0' && str[i] <= '9')
         {
-            res[y * SIZE + x] = tmp;
-            tmp = 0;
-            x++;
+            tmp = tmp * 10 + str[i] - '0';
+            reading = 1;
         }
         else if (str[i] == '\n')
         {
-            res[y * SIZE + x] = tmp;
+            if (reading)
+            {
+                res[y * SIZE + x] = tmp;
+                x++;
+            }
             tmp = 0;
+            reading = 0;
             y++;
             x = 0;
         }
         else
         {
-            tmp = tmp * 10 + str[i] - '0';
+            if (reading)
+            {
+                res[y * SIZE + x] = tmp;
+                x++;
+            }
+            tmp = 0;
+            reading = 0;
         }
     }
-    res[y * SIZE + x] = tmp;
+    if (reading)
+        res[y * SIZE + x] = tmp;
     return res;
 }
