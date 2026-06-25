@@ -4,10 +4,8 @@ permissions:
   contents: read
 
 on:
-  pull_request:
-    branches: [main]
   push:
-    branches: [tests]
+    branches: [main, tests]
   workflow_dispatch:
 
 jobs:
