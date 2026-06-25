@@ -9,8 +9,10 @@ jobs:
   test:
     runs-on: ubuntu-24.04
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install depedencies
-        run: chmod +x install.sh && ./install.sh
+        run: bash install.sh
 
       - name: Run tests
         run: make check
